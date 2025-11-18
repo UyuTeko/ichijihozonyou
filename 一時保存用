@@ -1,0 +1,129 @@
+if (this.fighter === 'ブルドッグ') {
+
+			if (this.skills[0] && this.cooldown[0] <= 0) {
+				if (heading.x === 0 && heading.y < 0) {
+					// ここから 落岩撃
+					const skill = summon('赤色のうず');
+					if (skill) {
+						skill.Skill = 'explosion';
+						skill.heading = { x: heading.x, y: -heading.y };
+						skill.Damage = 4.8 + this.attackBoost * 3;
+						skill.knockBack = 5;
+					}
+					this.cooldown[0] = 10;
+					this.skills[0] = false;
+					this.VelocityX = 0;
+					this.VelocityY = -1.9;
+					const dir = this.direction;
+					this.direction = 'down';
+					await wait(.4);
+					this.attackPower = 0;
+					this.attacking = true;
+					this.behavior = 'attack';
+					/*const skill = summon('赤色のうず');
+					if (skill) {
+						skill.Skill = 'fallRock';
+						skill.heading = { x: heading.x, y: -heading.y };
+						skill.Damage = 4.8 + this.attackBoost * 3;
+						skill.knockBack = 5;
+					}*/
+					await wait(.6);
+					this.attacking = false;
+					this.behavior = 'idle';
+					this.direction = dir;
+					// ここまで 落岩撃
+				}
+			}
+			if (this.skills[1] && this.cooldown[1] <= 0) {
+				if (heading.x && heading.y === 0) {
+					// ここから モグモグ突進
+					this.cooldown[1] = 5;
+					this.skills[1] = false;
+					this.gravityBoost = 0.1;
+					this.VelocityX = 0;
+					this.VelocityY = 0;
+					this.attackPower = 0;
+					this.attacking = true;
+					for (let i2 = 0; i2 < 6; i2++) {
+						let skill = summon('赤色のうず');
+						if (skill) {
+							skill.Skill = 'mgmg';
+							skill.heading = heading;
+							skill.Damage = 2.3;
+							skill.isMelee = true;
+						}
+						this.Rotation = heading.x * 60;
+						for (let i = 0; i < 3; i++) {
+							this.VelocityX = heading.x;
+							this.VelocityY = -this.gravity * 2;
+							await wait(.01);
+						}
+						skill = summon('赤色のうず');
+						if (skill) {
+							skill.Skill = 'mgmg';
+							skill.heading = heading;
+							skill.Damage = 2.3;
+							skill.isMelee = true;
+						}
+						this.Rotation = 0;
+						for (let i = 0; i < 2; i++) {
+							this.VelocityX = heading.x;
+							this.VelocityY = -this.gravity * 2;
+							await wait(.01);
+						}
+					}
+					const skill = summon('赤色のうず');
+					if (skill) {
+						skill.Skill = 'kick';
+						skill.heading = heading;
+						skill.Damage = 2.3;
+						skill.knockBack = 0.6;
+						skill.isMelee = true;
+					}
+					await wait(.2);
+					this.attacking = false;
+					this.behavior = 'idle';
+					this.gravityBoost = 0;
+					// ここまで モグモグ突進
+				}
+			}
+			if (this.skills[2] && this.cooldown[2] <= 0) {
+				if (heading.x === 0 && heading.y > 0) {
+					// ここから エナジーチャージ
+					this.VelocityX /= 2;
+					const skill = summon('赤色のうず');
+					if (skill) {
+						skill.Skill = 'chargeFire';
+						skill.heading = { x: 0, y: 0 };
+						skill.Damage = 0;
+					}
+					this.attackBoost++;
+					await wait(.4);
+					// ここまで エナジーチャージ
+				}
+			}
+			if (this.skills[3] && this.cooldown[3] <= 0) {
+				if (heading.x === 0 && heading.y === 0) {
+					// ここから 岩投げ
+					this.cooldown[3] = 20;
+					this.attackPower = 0;
+					this.attacking = true;
+					this.behavior = 'attack';
+					if (this.direction === 'left') heading.x = -1;
+					else if (this.direction === 'right') heading.x = 1;
+					const skill = summon('赤色のうず');
+					if (skill) {
+						skill.Skill = 'grape';
+						skill.heading = { x: heading.x / 2, y: -1 };
+						skill.Damage = 1.2;
+						skill.knockBack = 2;
+						skill.finishAttack = 0.1;
+					}
+					await wait(.8);
+					this.attacking = false;
+					this.behavior = 'idle';
+					// ここまで 岩投げ
+				}
+			}
+
+		}
