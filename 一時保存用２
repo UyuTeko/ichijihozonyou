@@ -1,0 +1,132 @@
+if (this.smashes[0]) {
+			if (heading.x === 0 && heading.y < 0) {
+				// ここから 上スマ
+				// this.smashes[0] = false;
+				this.VelocityX = 0;
+				this.VelocityY = -0.5;
+				this.attackPower = 0;
+				this.attacking = true;
+				await wait(.1);
+				this.behavior = 'attack';
+				let rotation = this.direction === 'left' ? -1 : 1
+				const skill = summon('赤色のうず');
+				if (skill) {
+					skill.Skill = 'upKick';
+					skill.heading = { x: rotation, y: heading.y };
+					skill.Damage = 3.3 + this.smashPower + this.attackBoost;
+					skill.isMelee = true;
+				}
+				for (let i = 1; i <= 16; i++) {
+					this.Rotation -= rotation * i;
+					await wait(.01);
+				}
+				const skill2 = summon('赤色のうず');
+				if (skill2) {
+					skill2.Skill = 'upKick2';
+					skill2.heading = { x: heading.x, y: heading.y };
+					skill2.Damage = 8.2 + this.smashPower + this.attackBoost * 3;
+					skill2.knockBack = 1.25;
+					skill2.finishAttack = 1.5;
+					skill2.isMelee = true;
+				}
+				for (let i = 0; i < 10; i++) {
+					this.plusY = -0.25;
+					this.VelocityY = 0;
+					await wait(.01);
+				}
+				for (let i = 1; i <= 16; i++) {
+					this.Rotation += rotation * i;
+					await wait(.01);
+				}
+				await wait(.15);
+				this.attacking = false;
+				this.behavior = 'idle';
+
+				this.attackBoost = 0;
+				// ここまで 上スマ
+			}
+		}
+		if (this.smashes[1]) {
+			if (heading.x && heading.y === 0) {
+				// ここから 横スマ
+				// this.smashes[1] = false;
+				this.VelocityX = -heading.x / 4;
+				this.VelocityY = -0.2;
+				this.attackPower = 0;
+				this.attacking = true;
+				await wait(.25);
+				this.VelocityX = heading.x / 1.5;
+				this.behavior = 'attack';
+				if (heading.x > 0) {
+					this.direction = 'right';
+				} else if (heading.x < 0) {
+					this.direction = 'left';
+				}
+				const skill = summon('赤色のうず');
+				if (skill) {
+					skill.Skill = 'kick';
+					skill.heading = { x: heading.x, y: heading.y };
+					skill.Damage = 8.2 + this.smashPower + this.attackBoost * 3;
+					skill.knockBack = 1.25;
+					skill.finishAttack = 1.5;
+					skill.isMelee = true;
+				}
+				await wait(.5);
+				await wait(.15);
+				this.attacking = false;
+				this.behavior = 'idle';
+
+				this.attackBoost = 0;
+				// ここまで 横スマ
+			}
+		}
+		if (this.smashes[2]) {
+			if (heading.x === 0 && heading.y > 0) {
+				// ここから 下スマ
+				// this.smashes[2] = false;
+				this.VelocityX = 0;
+				this.VelocityY = 0;
+				this.attackPower = 0;
+				this.attacking = true;
+				await wait(.05);
+				this.behavior = 'attack';
+				const dir = this.direction;
+				this.direction = 'down';
+				for (let i = 0; i < 10; i++) {
+					this.VelocityY = -0.5;
+					await wait(.01);
+				}
+				let skill = summon('赤色のうず');
+				if (skill) {
+					skill.Skill = 'kick';
+					skill.heading = { x: heading.x, y: heading.y };
+					skill.Damage = 8.2 + this.smashPower + this.attackBoost * 3;
+					skill.knockBack = 1.25;
+					skill.finishAttack = 1.5;
+					skill.isMelee = true;
+				}
+				for (let i = 0; i < 10; i++) {
+					this.plusY = 0.5;
+					this.VelocityY = 0;
+					if (i === 5) {
+						skill = summon('赤色のうず');
+						if (skill) {
+							skill.Skill = 'kick';
+							skill.heading = { x: heading.x, y: heading.y };
+							skill.Damage = 8.2 + this.smashPower + this.attackBoost * 3;
+							skill.knockBack = 1.25;
+							skill.finishAttack = 1.5;
+							skill.isMelee = true;
+						}
+					}
+					await wait(.01);
+				}
+				await wait(.15);
+				this.attacking = false;
+				this.behavior = 'idle';
+				this.direction = dir;
+
+				this.attackBoost = 0;
+				// ここまで 下スマ
+			}
+		}
